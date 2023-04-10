@@ -20,8 +20,8 @@ func main() {
 	// Ginルーターを設定
 	router := gin.Default()
 
-	// POST /completionsエンドポイントのハンドラーを設定
-	router.POST("/completions", func(c *gin.Context) {
+	// POST /エンドポイントのハンドラーを設定
+	router.POST("/", func(c *gin.Context) {
 		// リクエストのJSONペイロードからpromptを取得
 		var request struct {
 			Prompt string `json:"prompt"`
