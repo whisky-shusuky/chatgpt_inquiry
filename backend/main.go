@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	openai "github.com/sashabaranov/go-openai"
 )
@@ -19,6 +20,10 @@ func main() {
 
 	// Ginルーターを設定
 	router := gin.Default()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"} // 許可するオリジンを指定
+	router.Use(cors.New(config))
 
 	// POST /エンドポイントのハンドラーを設定
 	router.POST("/", func(c *gin.Context) {

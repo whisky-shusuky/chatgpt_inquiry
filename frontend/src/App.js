@@ -8,7 +8,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/completions', { prompt });
+      const response = await axios.post('http://localhost:8080', { prompt }, { headers: { 'Content-Type': 'application/json' } });
       setCompletion(response.data.completion);
     } catch (error) {
       console.error(error);
