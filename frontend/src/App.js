@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from 'react-bootstrap';
 
@@ -20,14 +19,15 @@ function App() {
 
   return (
     <div className="container">
+      <h1>めちゃくちゃ回答が早いお問い合わせフォーム</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formPrompt">
-          <Form.Label>お問い合わせ内容:</Form.Label>
+          <Form.Label>お問合せ内容:</Form.Label>
           <Form.Control type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
         </Form.Group>
         <Button variant="primary" type="submit">送信</Button>
       </Form>
-      <p>Completion: {completion}</p>
+      <p style={{ marginTop: '20px' }}>返信: {completion}</p>
     </div>
   );
 }
