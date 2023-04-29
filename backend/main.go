@@ -9,7 +9,17 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	openai "github.com/sashabaranov/go-openai"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
+
+// Inquiry 構造体は、プロンプト、メール、および `openai` からの応答を保持します。
+type Inquiry struct {
+	gorm.Model
+	Prompt     string
+	Email      string
+	Completion string
+}
 
 func main() {
 	// APIキーを設定
@@ -25,11 +35,25 @@ func main() {
 	config.AllowOrigins = []string{"http://localhost:3000"} // 許可するオリジンを指定
 	router.Use(cors.New(config))
 
+	// MySQLに接続
+	dsn := "myuser:mypassword@tcp(mysql:3306)/myapp?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("failed to connect database: %v", err)
+	}
+
+	// inquiry テーブルをマイグレーション
+	err = db.AutoMigrate(&Inquiry{})
+	if err != nil {
+		log.Fatalf("failed to migrate database: %v", err)
+	}
+
 	// POST /エンドポイントのハンドラーを設定
 	router.POST("/", func(c *gin.Context) {
-		// リクエストのJSONペイロードからpromptを取得
+		// リクエストのJSONペイロードからpromptとemailを取得
 		var request struct {
 			Prompt string `json:"prompt"`
+			Email  string `json:"email"`
 		}
 		if err := c.BindJSON(&request); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -55,6 +79,20 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "API error"})
+			return
+		}
+
+		// Inquiry 構造体を作成
+		inquiry := Inquiry{
+			Prompt:     request.Prompt,
+			Email:      request.Email,
+			Completion: response.Choices[0].Message.Content,
+		}
+
+		// MySQLに保存
+		err = db.Create(&inquiry).Error
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
