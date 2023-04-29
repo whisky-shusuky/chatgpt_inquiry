@@ -20,4 +20,12 @@ services:
     environment:
       - REACT_APP_API_URL=http://backend:8080
     restart: always
-
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=myapp
+      - MYSQL_USER=myuser
+      - MYSQL_PASSWORD=mypassword
+    ports:
+      - "3306:3306"
