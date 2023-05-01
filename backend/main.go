@@ -48,6 +48,19 @@ func main() {
 		log.Fatalf("failed to migrate database: %v", err)
 	}
 
+	// GET /inquiry エンドポイントのハンドラを設定
+	router.GET("/inquiry", func(c *gin.Context) {
+		// Inquiry テーブルからすべての行を取得
+		var inquiries []Inquiry
+		if err := db.Find(&inquiries).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		// JSONで返す
+		c.JSON(http.StatusOK, inquiries)
+	})
+
 	// POST /エンドポイントのハンドラーを設定
 	router.POST("/", func(c *gin.Context) {
 		// リクエストのJSONペイロードからpromptとemailを取得
