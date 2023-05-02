@@ -8,11 +8,13 @@ function InquiryForm() {
     prompt: '',
     email: '',
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:8080/inquiry', data, { headers: { 'Content-Type': 'application/json' } });
+      setSubmitted(true);
     } catch (error) {
       console.error(error);
     }
@@ -35,8 +37,9 @@ function InquiryForm() {
           <Form.Label>お客様の連絡先メールアドレス:</Form.Label>
           <Form.Control type="email" name="email" value={data.email} onChange={handleInputChange} />
         </Form.Group>
-        <Button variant="primary" type="submit">Complete</Button>
+        <Button variant="primary" type="submit">送信</Button>
       </Form>
+      {submitted && <p>お問い合わせを受け付けました。返答まで少々お待ちください。</p>}
     </div>
   );
 }
