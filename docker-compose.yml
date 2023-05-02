@@ -20,7 +20,10 @@ services:
       - backend
     environment:
       - REACT_APP_API_URL=http://backend:8080
+      - CHOKIDAR_USEPOLLING=true
     restart: always
+    volumes:
+      - ./frontend/src:/app/src
   mysql:
     image: mysql:latest
     environment:
