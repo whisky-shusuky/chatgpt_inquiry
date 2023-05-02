@@ -21,9 +21,9 @@ function InquiryList() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Prompt</th>
+            <th>問い合わせ内容</th>
             <th>Email</th>
-            <th>Completion</th>
+            <th>仮返答</th>
           </tr>
         </thead>
         <tbody>

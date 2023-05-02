@@ -29,7 +29,7 @@ function InquiryForm() {
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formPrompt">
           <Form.Label>お問い合わせ内容:</Form.Label>
-          <Form.Control type="text" name="prompt" value={data.prompt} onChange={handleInputChange} />
+          <Form.Control as="textarea" name="prompt" value={data.prompt} onChange={handleInputChange} />
         </Form.Group>
         <Form.Group controlId="formEmail">
           <Form.Label>お客様の連絡先メールアドレス:</Form.Label>

@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <div className="container">
-        <h1>めちゃくちゃ回答が早いお問い合わせフォーム</h1>
+        <h1>めちゃくちゃ回答が早い動画サイトお問い合わせフォーム</h1>
         <Routes>
           <Route path="/inquiry" element={<InquiryList />} />
           <Route path="/" element={<InquiryForm />} />
