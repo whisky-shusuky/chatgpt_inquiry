@@ -10,15 +10,17 @@ function InquiryForm() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('http://localhost:8080/inquiry', data, { headers: { 'Content-Type': 'application/json' } });
-      setSubmitted(true);
-    } catch (error) {
+const handleSubmit = (e) => {
+  e.preventDefault();
+  setSubmitted(true);
+  axios
+    .post('http://localhost:8080/inquiry', data, { headers: { 'Content-Type': 'application/json' } })
+    .catch((error) => {
       console.error(error);
-    }
-  };
+      setSubmitted(false);
+      // TODO: エラー処理
+    });
+};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
