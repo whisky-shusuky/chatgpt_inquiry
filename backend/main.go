@@ -62,7 +62,7 @@ func main() {
 	})
 
 	// POST /エンドポイントのハンドラーを設定
-	router.POST("/", func(c *gin.Context) {
+	router.POST("/inquiry", func(c *gin.Context) {
 		// リクエストのJSONペイロードからpromptとemailを取得
 		var request struct {
 			Prompt string `json:"prompt"`
