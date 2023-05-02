@@ -8,28 +8,36 @@ function InquiryForm() {
     prompt: '',
     email: '',
   });
+
   const [submitted, setSubmitted] = useState(false);
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setSubmitted(true);
-  axios
-    .post('http://localhost:8080/inquiry', data, { headers: { 'Content-Type': 'application/json' } })
-    .catch((error) => {
-      console.error(error);
-      setSubmitted(false);
-      // TODO: エラー処理
-    });
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+    axios
+      .post('http://localhost:8080/inquiry', data, { headers: { 'Content-Type': 'application/json' } })
+      .catch((error) => {
+        console.error(error);
+        setSubmitted(false);
+        // TODO: エラー処理
+      });
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
+  const successMessageStyle = {
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'black',
+    margin: '20px 0',
+  };
+
   return (
     <div className="container">
-      <h1>お問い合わせフォーム</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formPrompt">
           <Form.Label>お問い合わせ内容:</Form.Label>
@@ -41,7 +49,11 @@ const handleSubmit = (e) => {
         </Form.Group>
         <Button variant="primary" type="submit">送信</Button>
       </Form>
-      {submitted && <p>お問い合わせを受け付けました。返答まで少々お待ちください。</p>}
+      {submitted && (
+        <div style={successMessageStyle}>
+          お問い合わせを受け付けました。返答まで少々お待ちください。
+        </div>
+      )}
     </div>
   );
 }
